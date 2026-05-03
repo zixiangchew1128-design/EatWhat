@@ -1,260 +1,213 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>今日菜品推荐</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Microsoft YaHei", sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>吃啥都行</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Microsoft YaHei", sans-serif;
+    }
 
-        body {
-            background-color: #f9f9f9;
-            padding: 20px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+    body {
+      background: #f9fafb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
 
-        .title {
-            text-align: center;
-            color: #e53935;
-            margin: 20px 0;
-            font-size: 26px;
-        }
+    .container {
+      background: white;
+      padding: 35px 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+    }
 
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
+    h1 {
+      color: #ff6b6b;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
 
-        .section-title {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #333;
-            border-left: 4px solid #e53935;
-            padding-left: 10px;
-        }
+    .desc {
+      color: #666;
+      margin-bottom: 25px;
+    }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
+    .food-box {
+      background: #fff5f5;
+      padding: 20px;
+      border-radius: 16px;
+      margin: 20px 0;
+    }
 
-        .dish {
-            padding: 15px;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            text-align: center;
-            position: relative;
-        }
+    .food-item {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      padding: 10px;
+      margin: 6px 0;
+      background: white;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .dish.fav {
-            border: 2px solid #ff9800;
-            background: #fff8e8;
-        }
+    .collect-btn {
+      background: #ffd43b;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
 
-        .fav-tag {
-            position: absolute;
-            top: -8px;
-            right: -6px;
-            background: #ff9800;
-            color: white;
-            font-size: 12px;
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
+    .btn {
+      background: #4dabf7;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-size: 16px;
+      margin: 8px;
+      cursor: pointer;
+    }
 
-        .collect {
-            margin-top: 10px;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 6px;
-            background: #ffecb3;
-            color: #f57c00;
-            cursor: pointer;
-            font-size: 13px;
-        }
+    .btn-green {
+      background: #51cf66;
+    }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-        }
+    .input-box {
+      margin: 20px 0;
+    }
 
-        button.submit {
-            width: 100%;
-            padding: 11px;
-            background: #e53935;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 15px;
-        }
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      outline: none;
+    }
 
-        .audit-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .pass {
-            background: #4caf50;
-            color: white;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .fav-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .fav-item {
-            background: #ffe0b2;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-        }
-    </style>
+    .tip {
+      color: #999;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+  </style>
 </head>
+
 <body>
+  <div class="container">
+    <h1>🍽️ 吃啥都行</h1>
+    <p class="desc">随机推荐3个菜 · 必含一个你收藏的</p>
 
-    <h1 class="title">🍚 今日菜品推荐</h1>
+    <div class="food-box" id="foodContainer"></div>
 
-    <!-- 推荐区域：固定1个收藏 + 2个随机 -->
-    <div class="card">
-        <h2 class="section-title">今日推荐（固定收藏位）</h2>
-        <div class="grid" id="recommend"></div>
+    <button class="btn" onclick="refreshFood()">🔄 换一批</button>
+    <button class="btn btn-green" onclick="goCollect()">⭐ 我的收藏</button>
 
-        <div style="margin-top:20px">
-            <h3 style="font-size:16px; margin-bottom:10px">我的收藏</h3>
-            <div class="fav-list" id="favList"></div>
-        </div>
+    <div class="input-box">
+      <input type="text" id="userFood" placeholder="输入你想推荐的菜品">
+      <button class="btn" onclick="submitFood()">📤 推荐菜品给管理员</button>
+      <p class="tip">推荐后，管理员会尽快审核加入菜单</p>
     </div>
+  </div>
 
-    <!-- 用户提交 -->
-    <div class="card">
-        <h2 class="section-title">我要推荐菜品</h2>
-        <input type="text" id="name" placeholder="菜品名称">
-        <input type="text" id="desc" placeholder="简单描述">
-        <button class="submit" onclick="submit()">提交推荐</button>
-    </div>
+  <script>
+    // 系统菜品库
+    const systemFoods = [
+      "麻辣烫","火锅","烧烤","炸鸡","螺蛳粉","牛肉面","饺子","炒饭",
+      "米线","日料","披萨","黄焖鸡","麻辣香锅","酸菜鱼","烤肉饭","冒菜"
+    ];
 
-    <!-- 审核 -->
-    <div class="card">
-        <h2 class="section-title">管理员审核</h2>
-        <div id="auditList"></div>
-    </div>
+    // 读取本地收藏
+    let myCollection = JSON.parse(localStorage.getItem("myCollection")) || [];
 
-    <script>
-        // 数据
-        let dishes = JSON.parse(localStorage.getItem("dishes")) || [
-            { name: "麻婆豆腐", desc: "麻辣鲜香超下饭" },
-            { name: "番茄炒蛋", desc: "简单又好吃" },
-            { name: "红烧肉", desc: "肥而不腻" }
-        ];
+    // 随机推荐 3 个，其中 1 个必为收藏
+    function getThreeFoods() {
+      let collect = [...myCollection];
+      let system = [...systemFoods];
 
-        let pending = JSON.parse(localStorage.getItem("pending")) || [];
-        let favs = JSON.parse(localStorage.getItem("favs")) || [];
+      if (collect.length === 0) {
+        collect = ["快去收藏喜欢的菜品～"];
+      }
 
-        window.onload = () => {
-            renderRecommend();
-            renderAudit();
-            renderFav();
-        };
+      // 随机一个收藏
+      let mustCollect = collect[Math.floor(Math.random() * collect.length)];
+      
+      // 随机两个系统菜
+      let shuffled = system.sort(() => 0.5 - Math.random()).slice(0, 2);
+      
+      // 合并并打乱
+      let result = [mustCollect, ...shuffled].sort(() => 0.5 - Math.random());
+      return result;
+    }
 
-        // 推荐算法：1个收藏 + 2个随机
-        function renderRecommend() {
-            const el = document.getElementById("recommend");
-            el.innerHTML = "";
+    // 显示到页面
+    function refreshFood() {
+      let list = getThreeFoods();
+      let html = "";
+      list.forEach(f => {
+        html += `
+        <div class="food-item">
+          ${f}
+          <button class="collect-btn" onclick="collectThis('${f}')">⭐ 收藏</button>
+        </div>`;
+      });
+      document.getElementById("foodContainer").innerHTML = html;
+    }
 
-            const favDish = favs[0];
-            let random = [...dishes].sort(() => Math.random() - 0.5).slice(0, 2);
+    // 收藏菜品
+    function collectThis(food) {
+      if (!myCollection.includes(food)) {
+        myCollection.push(food);
+        localStorage.setItem("myCollection", JSON.stringify(myCollection));
+        alert(food + " 已收藏！");
+      } else {
+        alert(food + " 已经收藏过啦");
+      }
+    }
 
-            let list = [];
-            if (favDish) {
-                list.push({ name: favDish, fav: true });
-            }
-            list = list.concat(random);
+    // 查看收藏
+    function goCollect() {
+      if (myCollection.length === 0) {
+        alert("你还没有收藏任何菜品");
+        return;
+      }
+      alert("你的收藏：\n" + myCollection.join("\n"));
+    }
 
-            list.forEach(item => {
-                const div = document.createElement("div");
-                div.className = "dish " + (item.fav ? "fav" : "");
-                const tag = item.fav ? '<span class="fav-tag">收藏</span>' : "";
-                div.innerHTML = `
-                    ${tag}
-                    <h4>${item.name}</h4>
-                    <p style="font-size:13px; color:#666">${item.desc || ""}</p>
-                    <button class="collect" onclick="toggle('${item.name}')">
-                        ${favs.includes(item.name) ? "★ 已收藏" : "☆ 收藏"}
-                    </button>
-                `;
-                el.appendChild(div);
-            });
-        }
+    // 用户推荐菜品 → 通知管理员（这里跳转到你的消息渠道）
+    function submitFood() {
+      let food = document.getElementById("userFood").value.trim();
+      if (!food) {
+        alert("请输入菜品名称");
+        return;
+      }
 
-        // 收藏/取消
-        function toggle(name) {
-            favs.includes(name) ? favs = favs.filter(i => i !== name) : favs.push(name);
-            localStorage.setItem("favs", JSON.stringify(favs));
-            renderRecommend();
-            renderFav();
-        }
+      // 发送通知（你可以把下面网址改成你的微信/QQ/表单/邮箱等）
+      let msg = `用户推荐菜品：${food}`;
+      let yourNotifyUrl = "https://wxpusher.link/your-channel?msg=" + encodeURIComponent(msg);
+      window.open(yourNotifyUrl, "_blank");
 
-        function renderFav() {
-            const el = document.getElementById("favList");
-            el.innerHTML = favs.map(i => `<div class="fav-item">${i}</div>`).join("");
-        }
+      alert("推荐成功！等待管理员审核");
+      document.getElementById("userFood").value = "";
+    }
 
-        // 提交
-        function submit() {
-            const name = document.getElementById("name").value.trim();
-            const desc = document.getElementById("desc").value.trim();
-            if (!name) return alert("请填写菜品名称");
-            pending.push({ name, desc });
-            localStorage.setItem("pending", JSON.stringify(pending));
-            alert("提交成功，等待管理员审核");
-            document.getElementById("name").value = "";
-            document.getElementById("desc").value = "";
-            renderAudit();
-        }
-
-        // 审核
-        function renderAudit() {
-            const el = document.getElementById("auditList");
-            el.innerHTML = pending.map((i, idx) => `
-                <div class="audit-item">
-                    <div>${i.name} - ${i.desc || "无描述"}</div>
-                    <button class="pass" onclick="pass(${idx})">通过</button>
-                </div>
-            `).join("");
-        }
-
-        function pass(idx) {
-            dishes.push(pending[idx]);
-            pending.splice(idx, 1);
-            localStorage.setItem("dishes", JSON.stringify(dishes));
-            localStorage.setItem("pending", JSON.stringify(pending));
-            renderAudit();
-            renderRecommend();
-            alert("已上线！");
-        }
-    </script>
+    // 页面加载自动推荐
+    window.onload = refreshFood;
+  </script>
 </body>
 </html>
